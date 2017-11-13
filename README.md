@@ -1,5 +1,4 @@
 
-
 ### Description
 In this **DEMO**, the ***NeuronHwmNode*** subscribes to the **TOPIC_CMD** topic.
 
@@ -8,13 +7,13 @@ publish the next hardware monitor data to **TOPOC_DATA** topic.
 
 ### Notice
 **1.** The setting of **TOPIC_CMD** and **TOPIC_DATA** can be found in ***reuronHwmNode.hpp***
->
+
 **2.** This application **MUST** be running under **SUDO -E** since the SEMA driver need both root privilege and the user-exported variables.
 
 ### Steps
 **1. Install ADLINK SEMA**
 
-> Reference to [This Project](http://ros2.local:10080/Neuron/sema-3.5-installer/) which provides a script to help you download and install SEMA.
+Reference to [This Project](http://ros2.local:10080/Neuron/sema-3.5-installer/) which provides a script to help you download and install SEMA.
 
 **2. Set soft link**
 ```` bash
@@ -22,7 +21,7 @@ cd ./lib
 ./setlink.sh
 ````
 **3. Compile the source codes**
->
+
 **4. Execute it!**
 
 ```` bash
