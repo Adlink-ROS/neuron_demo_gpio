@@ -14,7 +14,7 @@ publish the next hardware monitor data to **TOPOC_DATA** topic.
 
 Reference to [This Project](http://ros2.local:10080/Neuron/sema-3.5-installer/) which provides a script to help you download and install SEMA.
 
-**2. Set soft link**
+**2. Setup soft link**
 ```` bash
 cd ${project_root}
 cd ./lib
