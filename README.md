@@ -34,7 +34,7 @@ sudo -E ./neuron_demo_hwm
 ros2 topic pub /neuron_hwm_cmd std_msgs/String "data: 0"
 ````
 
-** 6. The terminal running neuron_demo_hwm should display the HWM data like below. **
+**6. The terminal running neuron_demo_hwm should display the HWM data like below.**
 ```` bash
 data: 'Temp System: 32.000000 Celcius'
 data: 'Volt Vcore: 0.725000 V'
