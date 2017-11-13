@@ -29,7 +29,7 @@ cd ${project_root}
 cd ./build/
 sudo -E ./neuron_demo_hwm
 ````
-**5. Create a publisher in **ANOTHER** terminal to trigger it to response**
+**5. Create a publisher in ANOTHER terminal to trigger it to response**
 ````bash
 ros2 topic pub /neuron_hwm_cmd std_msgs/String "data: 0"
 ````
