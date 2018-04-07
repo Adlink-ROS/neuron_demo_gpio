@@ -43,11 +43,15 @@ class NeuronOmniIoNode : public rclcpp::Node
 
   private:
     void topic_callback(const std_msgs::msg::String::SharedPtr msg);
-	void set_led(const bool on_red, const bool on_orange, const bool on_yello, const bool on_green);
+	void set_led(const uint32_t (&state)[4]);
+    
     rclcpp::Publisher<std_msgs::msg::String>::SharedPtr publisher_;
     rclcpp::Subscription<std_msgs::msg::String>::SharedPtr subscription_;
+    
     std::shared_ptr<NeuronOmniIo> gpio_led_r_, gpio_led_o_, gpio_led_y_, gpio_led_g_;
-	std::shared_ptr<NeuronOmniIo> gpio_sw_contact_, gpio_sw_onoff;
+	std::shared_ptr<NeuronOmniIo> gpio_sw_contact_, gpio_sw_onoff_;
+    
+    uint32_t rotate_i;
 };
 
 

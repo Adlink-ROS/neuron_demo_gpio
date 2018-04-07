@@ -36,17 +36,17 @@ void NeuronOmniIoNode::topic_callback(const std_msgs::msg::String::SharedPtr msg
     // Toggle GPIO Level
     uint32_t level[4] = {0};
 	uint32_t contact_sw_level, onoff_sw_level;
-	uint32_t i;
 	
-	i = (i+1)%4;
-	level[i] = EAPI_GPIO_HIGH;
 	
-    contact_sw_level = gpio_sw_contact_->ReadLevel(level);
-	onoff_sw_level = gpio_sw_onoff_->ReadLevel(level);
+	rotate_i = (rotate_i+1)%4;
+	level[rotate_i] = EAPI_GPIO_HIGH;
+	
+    gpio_sw_contact_->ReadLevel(contact_sw_level);
+	gpio_sw_onoff_->ReadLevel(onoff_sw_level);
 	
     if (contact_sw_level == EAPI_GPIO_LOW)
 	{
-		for(j = 0;j<4;j++)
+		for(int j = 0;j<4;j++)
 		{
 			level[j] = EAPI_GPIO_HIGH;
 		}
@@ -116,9 +116,17 @@ NeuronOmniIoNode::NeuronOmniIoNode() : Node("neuron_gpio")
 		gpio_sw_onoff_->SetDir(EAPI_GPIO_INPUT);
 		
 	}
+	
+	rotate_i = 0;
 }
 
 NeuronOmniIoNode::~NeuronOmniIoNode()
 {
+    uint32_t level[4] = {0};
+    set_led(level);
+    gpio_led_r_->SetDir(EAPI_GPIO_INPUT);
+	gpio_led_o_->SetDir(EAPI_GPIO_INPUT);
+	gpio_led_y_->SetDir(EAPI_GPIO_INPUT);
+	gpio_led_g_->SetDir(EAPI_GPIO_INPUT);
     NeuronOmniIo::UnInitLib();
 }

@@ -37,7 +37,7 @@ add_executable(neuron_demo_gpio src/main.cpp src/neuronGpio.cpp src/neuronGpioNo
 target_link_libraries(neuron_demo_gpio semaeapi)
 ament_target_dependencies(neuron_demo_gpio rclcpp std_msgs)
 
-add_executable(neuron_omni_io src/omni_main.cpp src/neuronOmni.cpp src/neuronOmniNode.cpp)
+add_executable(neuron_omni_io src/omni_main.cpp src/neuronOmniIo.cpp src/neuronOmniIoNode.cpp)
 target_link_libraries(neuron_omni_io semaeapi)
 ament_target_dependencies(neuron_omni_io rclcpp std_msgs)
 
