@@ -63,14 +63,10 @@ void NeuronOmniIoNode::topic_callback(const std_msgs::msg::String::SharedPtr msg
     /* publish data
 	// Send it out
     std::string stmp;
-    stmp += "The GPIO Pin";
-    stmp += std::to_string(GPIO_TOGGLE_PIN);
-    stmp += " is set to ";
-    stmp += level? "HIGH" : "LOW";
-
     msg->data = stmp;
     printf("<<<= send to ------- Topic <\"%s\">: \"%s\".\n", TOPIC_DATA, msg->data.c_str());*/
-    publisher_->publish(msg);    
+    //publisher_->publish(msg);
+    
     return;
 }
 
@@ -89,8 +85,8 @@ void NeuronOmniIoNode::set_led(const uint32_t (&state)[4])
  * * * * * * * * * */
 NeuronOmniIoNode::NeuronOmniIoNode() : Node("neuron_gpio")
 {
-    publisher_ = this->create_publisher<std_msgs::msg::String>(
-            TOPIC_DATA, rmw_qos_profile_sensor_data);
+    //publisher_ = this->create_publisher<std_msgs::msg::String>(
+    //      TOPIC_DATA, rmw_qos_profile_sensor_data);
 
     subscription_ = this->create_subscription<std_msgs::msg::String>(
             TOPIC_CMD, std::bind(&NeuronOmniIoNode::topic_callback, this, _1),
