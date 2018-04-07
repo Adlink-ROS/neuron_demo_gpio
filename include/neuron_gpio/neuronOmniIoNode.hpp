@@ -48,8 +48,8 @@ class NeuronOmniIoNode : public rclcpp::Node
     rclcpp::Publisher<std_msgs::msg::String>::SharedPtr publisher_;
     rclcpp::Subscription<std_msgs::msg::String>::SharedPtr subscription_;
     
-    std::shared_ptr<neuronGpio> gpio_led_r_, gpio_led_o_, gpio_led_y_, gpio_led_g_;
-	std::shared_ptr<neuronGpio> gpio_sw_contact_, gpio_sw_onoff_;
+    std::shared_ptr<NeuronGpio> gpio_led_r_, gpio_led_o_, gpio_led_y_, gpio_led_g_;
+	std::shared_ptr<NeuronGpio> gpio_sw_contact_, gpio_sw_onoff_;
     
     uint32_t rotate_i_;
 };

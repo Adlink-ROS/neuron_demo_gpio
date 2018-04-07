@@ -27,7 +27,7 @@ void NeuronOmniIoNode::topic_callback(const std_msgs::msg::String::SharedPtr msg
     printf("\n");
 
     // Check the availability of the SEMA library 
-    if (neuronGpio::IsAvailable() == false)
+    if (NeuronGpio::IsAvailable() == false)
     {
         printf("[ERROR] NeuronOmniIoNode - SEMA Lib not found.\n");
         return;
@@ -96,17 +96,17 @@ NeuronOmniIoNode::NeuronOmniIoNode() : Node("neuron_gpio")
             TOPIC_CMD, std::bind(&NeuronOmniIoNode::topic_callback, this, _1),
             rmw_qos_profile_sensor_data);
         
-    neuronGpio::InitLib();
+    NeuronGpio::InitLib();
     
-	if(neuronGpio::IsAvailable())
+	if(NeuronGpio::IsAvailable())
 	{
-		//gpio_ = std::make_shared<neuronGpio>(GPIO_TOGGLE_PIN);
-		gpio_led_r_ = std::make_shared<neuronGpio>(GPIO_LED_R_PIN);
-		gpio_led_o_ = std::make_shared<neuronGpio>(GPIO_LED_O_PIN);
-		gpio_led_y_ = std::make_shared<neuronGpio>(GPIO_LED_Y_PIN);
-		gpio_led_g_ = std::make_shared<neuronGpio>(GPIO_LED_G_PIN);
-		gpio_sw_contact_ = std::make_shared<neuronGpio>(GPIO_SW_CONTACT_PIN);
-		gpio_sw_onoff_ = std::make_shared<neuronGpio>(GPIO_SW_ONOFF_PIN);
+		//gpio_ = std::make_shared<NeuronGpio>(GPIO_TOGGLE_PIN);
+		gpio_led_r_ = std::make_shared<NeuronGpio>(GPIO_LED_R_PIN);
+		gpio_led_o_ = std::make_shared<NeuronGpio>(GPIO_LED_O_PIN);
+		gpio_led_y_ = std::make_shared<NeuronGpio>(GPIO_LED_Y_PIN);
+		gpio_led_g_ = std::make_shared<NeuronGpio>(GPIO_LED_G_PIN);
+		gpio_sw_contact_ = std::make_shared<NeuronGpio>(GPIO_SW_CONTACT_PIN);
+		gpio_sw_onoff_ = std::make_shared<NeuronGpio>(GPIO_SW_ONOFF_PIN);
 		
 		gpio_led_r_->SetDir(EAPI_GPIO_OUTPUT);
 		gpio_led_o_->SetDir(EAPI_GPIO_OUTPUT);
@@ -117,7 +117,7 @@ NeuronOmniIoNode::NeuronOmniIoNode() : Node("neuron_gpio")
 		
 	}
 	
-	rotate_i = 0;
+	rotate_i_ = 0;
 }
 
 NeuronOmniIoNode::~NeuronOmniIoNode()
@@ -128,5 +128,5 @@ NeuronOmniIoNode::~NeuronOmniIoNode()
 	gpio_led_o_->SetDir(EAPI_GPIO_INPUT);
 	gpio_led_y_->SetDir(EAPI_GPIO_INPUT);
 	gpio_led_g_->SetDir(EAPI_GPIO_INPUT);
-    neuronGpio::UnInitLib();
+    NeuronGpio::UnInitLib();
 }
