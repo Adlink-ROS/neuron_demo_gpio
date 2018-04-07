@@ -13,11 +13,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include "neuronGpioNode.hpp"
+#include "neuronOmniIoNode.hpp"
 
 
 /*
- *  In this DEMO, the NeuronGpioNode subscribes the TOPIC_CMD topic.
+ *  In this DEMO, the NeuronOmniIoNode subscribes the TOPIC_CMD topic.
  *  ANY kind of std_msgs data from TOPIC_CMD will trigger the node to
  *  toggle the GPIO PIN10 and publish the GPIO HIGH/LOW to TOPOC_DATA topic.
  * 
@@ -26,7 +26,7 @@
 int main(int argc, char *argv[])
 {
     rclcpp::init(argc, argv);
-    rclcpp::spin(std::make_shared<NeuronGpioNode>());
+    rclcpp::spin(std::make_shared<NeuronOmniIoNode>());
     rclcpp::shutdown();
     return 0;
 }

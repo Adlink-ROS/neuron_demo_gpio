@@ -2,8 +2,9 @@
 <package format="2">
     <name>neuron_demo_gpio</name>
     <version>0.0.1</version>
-    <description>A demo of setting the high/low of Neuron's GPIO10</description>
+    <description>A demo using Neuron's GPIO10</description>
     <maintainer email="alan.chen@adlinktech.com">Alan Chen</maintainer>
+	<maintainer email="f039281310@yahoo.com.tw">Ewing Kang</maintainer>
     <license>Apache License 2.0</license>
 
     <buildtool_depend>ament_cmake</buildtool_depend>

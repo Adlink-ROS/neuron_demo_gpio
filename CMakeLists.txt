@@ -14,7 +14,9 @@ endif()
 #set(CMAKE_BUILD_TYPE Debug)
 
 # Add include directories
-include_directories(${CMAKE_SOURCE_DIR}/include/neuron_demo_gpio ${CMAKE_SOURCE_DIR}/include/SEMA)
+include_directories(${CMAKE_SOURCE_DIR}/include/neuron_demo_gpio 
+                    ${CMAKE_SOURCE_DIR}/include/neuron_omni_io
+                    ${CMAKE_SOURCE_DIR}/include/SEMA)
 
 # Set link directories
 link_directories(${CMAKE_SOURCE_DIR}/lib)
@@ -35,8 +37,13 @@ add_executable(neuron_demo_gpio src/main.cpp src/neuronGpio.cpp src/neuronGpioNo
 target_link_libraries(neuron_demo_gpio semaeapi)
 ament_target_dependencies(neuron_demo_gpio rclcpp std_msgs)
 
+add_executable(neuron_omni_io src/omni_main.cpp src/neuronOmni.cpp src/neuronOmniNode.cpp)
+target_link_libraries(neuron_omni_io semaeapi)
+ament_target_dependencies(neuron_omni_io rclcpp std_msgs)
+
 install(TARGETS 
 neuron_demo_gpio
+neuron_omni_io
     DESTINATION lib/${PROJECT_NAME}
 )
 

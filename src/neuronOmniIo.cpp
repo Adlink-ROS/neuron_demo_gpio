@@ -14,25 +14,25 @@
 // limitations under the License.
 
 #include <stdio.h>
-#include "neuronGpio.hpp"
+#include "neuronOmniIo.hpp"
 
 /* * * * * * * * * * * * * *  
  * Static Private Members  *
  * * * * * * * * * * * * * */
-bool NeuronGpio::isAvailable_ = false;
+bool NeuronOmniIo::isAvailable_ = false;
 
-uint32_t NeuronGpio::libHandle_ = 0;
+uint32_t NeuronOmniIo::libHandle_ = 0;
 
 /* * * * * * * * * * * * * 
  * Static Public Methods *
  * * * * * * * * * * * * */
-bool NeuronGpio::IsAvailable() 
+bool NeuronOmniIo::IsAvailable() 
 {
     return isAvailable_;
 }
 
 
-void NeuronGpio::InitLib()
+void NeuronOmniIo::InitLib()
 {
     // Initialize the the SEMA library if it hasn't been initialized.
     if (isAvailable_ == false)
@@ -44,13 +44,13 @@ void NeuronGpio::InitLib()
         isAvailable_ = (ret == EAPI_STATUS_SUCCESS)?  true : false;
         if (isAvailable_ == false)
         {
-            printf("[ERROR] NeuronGpio - Can't initialize SEMA Lib. Error code: %X\n", ret);
+            printf("[ERROR] NeuronOmniIo - Can't initialize SEMA Lib. Error code: %X\n", ret);
         }
     }
 }
 
 
-void NeuronGpio::UnInitLib()
+void NeuronOmniIo::UnInitLib()
 {
     // Uninitialize the SEMA library if it has been initialized
     if (isAvailable_ == true)
@@ -65,7 +65,7 @@ void NeuronGpio::UnInitLib()
 /* * * * * * * * * * * * * 
  *    Public Methods     *
  * * * * * * * * * * * * */
-void NeuronGpio::SetDir(uint32_t dir)
+void NeuronOmniIo::SetDir(uint32_t dir)
 {
     uint32_t dirCheck = 0, ret = 0;
 	
@@ -86,7 +86,7 @@ void NeuronGpio::SetDir(uint32_t dir)
 }
 
 
-void NeuronGpio::SetLevel(uint32_t level)
+void NeuronOmniIo::SetLevel(uint32_t level)
 {
     uint32_t ret = 0;
     ret = SemaEApiGPIOSetLevel(libHandle_, EAPI_GPIO_GPIO_ID(pin_), 0x01, level);
@@ -97,7 +97,7 @@ void NeuronGpio::SetLevel(uint32_t level)
 }
 
 
-void NeuronGpio::ReadLevel(uint32_t& level)
+void NeuronOmniIo::ReadLevel(uint32_t& level)
 {																				
     uint32_t ret = 0;
     ret = SemaEApiGPIOGetLevel(libHandle_, EAPI_GPIO_GPIO_ID(pin_), 0x01, &level);

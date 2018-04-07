@@ -12,8 +12,8 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-#ifndef __NEURON_GPIO__
-#define __NEURON_GPIO__
+#ifndef __NEURON_OMNI_IO__
+#define __NEURON_OMNI_IO__
 
 #include <string>
 #include "linux/EApiOs.h"
@@ -21,19 +21,19 @@
 #include "semaeapi.h"
 
 
-class NeuronGpio
+class NeuronOmniIo
 {
     public:
         static bool IsAvailable();
         static void InitLib();
         static void UnInitLib();
 
-	void SetDir(uint32_t dir);
-	void SetLevel(uint32_t level);
-	void ReadLevel(uint32_t& level);
+		void SetDir(uint32_t dir);
+		void SetLevel(uint32_t level);
+		void ReadLevel(uint32_t& level);
 
-        explicit NeuronGpio(uint32_t pin) : pin_(pin) {};
-        virtual ~NeuronGpio() {};
+        explicit NeuronOmniIo(uint32_t pin) : pin_(pin) {};
+        virtual ~NeuronOmniIo() {};
 
     private:
         static bool isAvailable_;
@@ -42,4 +42,4 @@ class NeuronGpio
 };
 
 
-#endif /* __NEURON_GPIO__ */
+#endif /* __NEURON_OMNI_IO__ */

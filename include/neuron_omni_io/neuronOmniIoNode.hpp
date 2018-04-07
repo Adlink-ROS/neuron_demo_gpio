@@ -12,36 +12,43 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-#ifndef __NEURON_GPIO_NODE__
-#define __NEURON_GPIO_NODE__
+#ifndef __NEURON_OMNI_IO_NODE__
+#define __NEURON_OMNI_IO_NODE__
 
 #include <memory>
 #include "rclcpp/rclcpp.hpp"
 #include "std_msgs/msg/string.hpp"
-#include "neuronGpio.hpp"
+#include "neuronOmniIo.hpp"
 
 /*  Topic Name Settings */
 #define TOPIC_CMD "neuron_gpio_cmd"
 #define TOPIC_DATA "neuron_gpio_data"
 
 /* GPIO Settings */
-#define GPIO_TOGGLE_PIN (9)
+#define GPIO_LED_R_PIN (0)	// red LED
+#define GPIO_LED_O_PIN (2)	// orange LED
+#define GPIO_LED_Y_PIN (4)	// yello LED
+#define GPIO_LED_G_PIN (6)	// green LED
+#define GPIO_SW_CONTACT_PIN (1)	// conatct 
+#define GPIO_SW_ONOFF_PIN (3)	// on off LED
 
 
 using std::placeholders::_1;
 
-class NeuronGpioNode : public rclcpp::Node
+class NeuronOmniIoNode : public rclcpp::Node
 {
   public:
-    explicit NeuronGpioNode();
-    virtual ~NeuronGpioNode();
+    explicit NeuronOmniIoNode();
+    virtual ~NeuronOmniIoNode();
 
   private:
     void topic_callback(const std_msgs::msg::String::SharedPtr msg);
+	void set_led(const bool on_red, const bool on_orange, const bool on_yello, const bool on_green);
     rclcpp::Publisher<std_msgs::msg::String>::SharedPtr publisher_;
     rclcpp::Subscription<std_msgs::msg::String>::SharedPtr subscription_;
-    std::shared_ptr<NeuronGpio> gpio_;
+    std::shared_ptr<NeuronOmniIo> gpio_led_r_, gpio_led_o_, gpio_led_y_, gpio_led_g_;
+	std::shared_ptr<NeuronOmniIo> gpio_sw_contact_, gpio_sw_onoff;
 };
 
 
-#endif /* __NEURON_GPIO_NODE__ */
+#endif /* __NEURON_OMNI_IO_NODE__ */
