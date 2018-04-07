@@ -27,7 +27,7 @@ void NeuronOmniIoNode::topic_callback(const std_msgs::msg::String::SharedPtr msg
     printf("\n");
 
     // Check the availability of the SEMA library 
-    if (NeuronOmniIo::IsAvailable() == false)
+    if (neuronGpio::IsAvailable() == false)
     {
         printf("[ERROR] NeuronOmniIoNode - SEMA Lib not found.\n");
         return;
@@ -38,8 +38,8 @@ void NeuronOmniIoNode::topic_callback(const std_msgs::msg::String::SharedPtr msg
 	uint32_t contact_sw_level, onoff_sw_level;
 	
 	
-	rotate_i = (rotate_i+1)%4;
-	level[rotate_i] = EAPI_GPIO_HIGH;
+	rotate_i_ = (rotate_i_+1)%4;
+	level[rotate_i_] = EAPI_GPIO_HIGH;
 	
     gpio_sw_contact_->ReadLevel(contact_sw_level);
 	gpio_sw_onoff_->ReadLevel(onoff_sw_level);
@@ -96,17 +96,17 @@ NeuronOmniIoNode::NeuronOmniIoNode() : Node("neuron_gpio")
             TOPIC_CMD, std::bind(&NeuronOmniIoNode::topic_callback, this, _1),
             rmw_qos_profile_sensor_data);
         
-    NeuronOmniIo::InitLib();
+    neuronGpio::InitLib();
     
-	if(NeuronOmniIo::IsAvailable())
+	if(neuronGpio::IsAvailable())
 	{
-		//gpio_ = std::make_shared<NeuronOmniIo>(GPIO_TOGGLE_PIN);
-		gpio_led_r_ = std::make_shared<NeuronOmniIo>(GPIO_LED_R_PIN);
-		gpio_led_o_ = std::make_shared<NeuronOmniIo>(GPIO_LED_O_PIN);
-		gpio_led_y_ = std::make_shared<NeuronOmniIo>(GPIO_LED_Y_PIN);
-		gpio_led_g_ = std::make_shared<NeuronOmniIo>(GPIO_LED_G_PIN);
-		gpio_sw_contact_ = std::make_shared<NeuronOmniIo>(GPIO_SW_CONTACT_PIN);
-		gpio_sw_onoff_ = std::make_shared<NeuronOmniIo>(GPIO_SW_ONOFF_PIN);
+		//gpio_ = std::make_shared<neuronGpio>(GPIO_TOGGLE_PIN);
+		gpio_led_r_ = std::make_shared<neuronGpio>(GPIO_LED_R_PIN);
+		gpio_led_o_ = std::make_shared<neuronGpio>(GPIO_LED_O_PIN);
+		gpio_led_y_ = std::make_shared<neuronGpio>(GPIO_LED_Y_PIN);
+		gpio_led_g_ = std::make_shared<neuronGpio>(GPIO_LED_G_PIN);
+		gpio_sw_contact_ = std::make_shared<neuronGpio>(GPIO_SW_CONTACT_PIN);
+		gpio_sw_onoff_ = std::make_shared<neuronGpio>(GPIO_SW_ONOFF_PIN);
 		
 		gpio_led_r_->SetDir(EAPI_GPIO_OUTPUT);
 		gpio_led_o_->SetDir(EAPI_GPIO_OUTPUT);
@@ -128,5 +128,5 @@ NeuronOmniIoNode::~NeuronOmniIoNode()
 	gpio_led_o_->SetDir(EAPI_GPIO_INPUT);
 	gpio_led_y_->SetDir(EAPI_GPIO_INPUT);
 	gpio_led_g_->SetDir(EAPI_GPIO_INPUT);
-    NeuronOmniIo::UnInitLib();
+    neuronGpio::UnInitLib();
 }
