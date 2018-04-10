@@ -26,7 +26,9 @@
 int main(int argc, char *argv[])
 {
     rclcpp::init(argc, argv);
-    rclcpp::spin(std::make_shared<NeuronOmniIoNode>());
+	auto node = std::make_shared<NeuronOmniIoNode>()
+    rclcpp::spin(node);
+	node.reset();	// calling destructor through shared_ptr
     rclcpp::shutdown();
     return 0;
 }

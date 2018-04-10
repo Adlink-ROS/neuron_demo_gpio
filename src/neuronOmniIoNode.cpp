@@ -33,32 +33,13 @@ void NeuronOmniIoNode::topic_callback(const std_msgs::msg::String::SharedPtr msg
         return;
     }
 
-    // Toggle GPIO Level
+    // Toggle LEDs Level
     uint32_t level[4] = {0};
 	uint32_t contact_sw_level, onoff_sw_level;
 	
-	
 	rotate_i_ = (rotate_i_+1)%4;
 	level[rotate_i_] = EAPI_GPIO_HIGH;
-	
-    gpio_sw_contact_->ReadLevel(contact_sw_level);
-	gpio_sw_onoff_->ReadLevel(onoff_sw_level);
-	
-    if (contact_sw_level == EAPI_GPIO_LOW)
-	{
-		for(int j = 0;j<4;j++)
-		{
-			level[j] = EAPI_GPIO_HIGH;
-		}
-		
-	}
-	
-	if (onoff_sw_level == EAPI_GPIO_HIGH)
-	{
-		// do something
-	}
-  
-	set_led(level);
+  	if(!last_contact_)	{	set_led(level);		} 		// LED override check
 
     /* publish data
 	// Send it out
@@ -68,6 +49,34 @@ void NeuronOmniIoNode::topic_callback(const std_msgs::msg::String::SharedPtr msg
     //publisher_->publish(msg);
     
     return;
+}
+
+void NeuronOmniIoNode::timer_callback()
+{
+	// read contact switch
+	uint32_t contact_sw_level, onoff_sw_level;
+    gpio_sw_contact_->ReadLevel(contact_sw_level);
+	gpio_sw_onoff_->ReadLevel(onoff_sw_level);
+
+	uint32_t level[4] = {0};
+    if(contact_sw_level == EAPI_GPIO_LOW)
+	{
+		if(!last_contact)		// rising edge
+		{			
+			RCLCPP_INFO(this->get_logger(), "CONTACT!!! time: %d", clock_::now());
+		}
+		// set all LEDs HIGH if contact
+		for(int j = 0;j<4;j++)	{	level[j] = EAPI_GPIO_HIGH;	}
+		last_contact_ = true;
+	}else{
+		last_contact = false;
+	}
+	set_led(level);	
+	
+	
+	if (onoff_sw_level == EAPI_GPIO_LOW) switch_on_ = true;
+	else switch_on_ = false;
+	return;
 }
 
 void NeuronOmniIoNode::set_led(const uint32_t (&state)[4])
@@ -83,6 +92,8 @@ void NeuronOmniIoNode::set_led(const uint32_t (&state)[4])
 /* * * * * * * * * * 
  * Public Methods  *
  * * * * * * * * * */
+ 
+//====== Constructor ======//
 NeuronOmniIoNode::NeuronOmniIoNode() : Node("neuron_gpio")
 {
     //publisher_ = this->create_publisher<std_msgs::msg::String>(
@@ -91,12 +102,14 @@ NeuronOmniIoNode::NeuronOmniIoNode() : Node("neuron_gpio")
     subscription_ = this->create_subscription<std_msgs::msg::String>(
             TOPIC_CMD, std::bind(&NeuronOmniIoNode::topic_callback, this, _1),
             rmw_qos_profile_sensor_data);
+			
+	timer_ = this->create_wall_timer(10_ms, timer_callback);
+	clock_ = std::make_shared<rclcpp::Clock>(RCL_ROS_TIME);
         
     NeuronGpio::InitLib();
     
 	if(NeuronGpio::IsAvailable())
 	{
-		//gpio_ = std::make_shared<NeuronGpio>(GPIO_TOGGLE_PIN);
 		gpio_led_r_ = std::make_shared<NeuronGpio>(GPIO_LED_R_PIN);
 		gpio_led_o_ = std::make_shared<NeuronGpio>(GPIO_LED_O_PIN);
 		gpio_led_y_ = std::make_shared<NeuronGpio>(GPIO_LED_Y_PIN);
@@ -114,8 +127,11 @@ NeuronOmniIoNode::NeuronOmniIoNode() : Node("neuron_gpio")
 	}
 	
 	rotate_i_ = 0;
+	switch_on_ = false;
+	last_contact_ = false;
 }
 
+//====== Destructor ======//
 NeuronOmniIoNode::~NeuronOmniIoNode()
 {
     uint32_t level[4] = {0};
@@ -124,5 +140,6 @@ NeuronOmniIoNode::~NeuronOmniIoNode()
 	gpio_led_o_->SetDir(EAPI_GPIO_INPUT);
 	gpio_led_y_->SetDir(EAPI_GPIO_INPUT);
 	gpio_led_g_->SetDir(EAPI_GPIO_INPUT);
+	printf("Node shutting down, reset all GPIOs");
     NeuronGpio::UnInitLib();
 }
