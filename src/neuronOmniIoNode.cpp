@@ -15,6 +15,8 @@
 #include <stdio.h>
 #include "neuronOmniIoNode.hpp"
 
+using namespace std::chrono_literals;
+
 
 /* * * * * * * * * * 
  * Private Methods *
@@ -34,9 +36,7 @@ void NeuronOmniIoNode::topic_callback(const std_msgs::msg::String::SharedPtr msg
     }
 
     // Toggle LEDs Level
-    uint32_t level[4] = {0};
-	uint32_t contact_sw_level, onoff_sw_level;
-	
+    uint32_t level[4] = {0};	
 	rotate_i_ = (rotate_i_+1)%4;
 	level[rotate_i_] = EAPI_GPIO_HIGH;
   	if(!last_contact_)	{	set_led(level);		} 		// LED override check
@@ -57,21 +57,33 @@ void NeuronOmniIoNode::timer_callback()
 	uint32_t contact_sw_level, onoff_sw_level;
     gpio_sw_contact_->ReadLevel(contact_sw_level);
 	gpio_sw_onoff_->ReadLevel(onoff_sw_level);
-
+    
+    /*rclcpp::TimeSource ts(shared_from_this());
+    rclcpp::Clock::SharedPtr clk2 = std::make_shared<rclcpp::Clock>(RCL_ROS_TIME);
+    ts.attachClock(clk2);
+    rclcpp::Clock clk3;*/
+    
 	uint32_t level[4] = {0};
-    if(contact_sw_level == EAPI_GPIO_LOW)
+    if( contact_sw_level == EAPI_GPIO_LOW )
 	{
-		if(!last_contact)		// rising edge
+		if( !last_contact_ )		// rising edge
 		{			
-			RCLCPP_INFO(this->get_logger(), "CONTACT!!! time: %d", clock_::now());
+			//RCLCPP_INFO(this->get_logger(), "CONTACT!!! time: %ld", clk2->now());
+            RCLCPP_INFO(this->get_logger(), "CONTACT!!! time: %ld", std::chrono::system_clock::now());
+            // set all LEDs HIGH if contact
+            for(int j = 0;j<4;j++)	{	level[j] = EAPI_GPIO_HIGH;	}
+            last_contact_ = true;
+            set_led(level);	
 		}
-		// set all LEDs HIGH if contact
-		for(int j = 0;j<4;j++)	{	level[j] = EAPI_GPIO_HIGH;	}
-		last_contact_ = true;
 	}else{
-		last_contact = false;
-	}
-	set_led(level);	
+        if( last_contact_ )   // falling edge
+        {
+            level[rotate_i_] = EAPI_GPIO_HIGH;
+            set_led(level);
+        }
+        last_contact_ = false;
+    }
+	
 	
 	
 	if (onoff_sw_level == EAPI_GPIO_LOW) switch_on_ = true;
@@ -103,8 +115,11 @@ NeuronOmniIoNode::NeuronOmniIoNode() : Node("neuron_gpio")
             TOPIC_CMD, std::bind(&NeuronOmniIoNode::topic_callback, this, _1),
             rmw_qos_profile_sensor_data);
 			
-	timer_ = this->create_wall_timer(10_ms, timer_callback);
+	timer_ = this->create_wall_timer(10ms, std::bind(&NeuronOmniIoNode::timer_callback, this));
 	clock_ = std::make_shared<rclcpp::Clock>(RCL_ROS_TIME);
+    //ts_ = std::make_shared<rclcpp::TimeSource>(shared_from_this());
+    //ts_ = rclcpp::TimeSource(this);
+   
         
     NeuronGpio::InitLib();
     

@@ -16,9 +16,10 @@
 #define __NEURON_OMNI_IO_NODE__
 
 #include <memory>
-
+#include <chrono>
 #include "rclcpp/rclcpp.hpp"
 #include "rclcpp/clock.hpp"
+#include "rclcpp/time_source.hpp"
 #include "std_msgs/msg/string.hpp"
 #include "neuronGpio.hpp"
 
@@ -42,6 +43,7 @@ class NeuronOmniIoNode : public rclcpp::Node
   public:
     explicit NeuronOmniIoNode();
     virtual ~NeuronOmniIoNode();
+    rclcpp::Clock::SharedPtr clock_;
 
   private:
     void topic_callback(const std_msgs::msg::String::SharedPtr msg);
@@ -51,7 +53,7 @@ class NeuronOmniIoNode : public rclcpp::Node
     //rclcpp::Publisher<std_msgs::msg::String>::SharedPtr publisher_;
     rclcpp::Subscription<std_msgs::msg::String>::SharedPtr subscription_;
 	rclcpp::TimerBase::SharedPtr timer_;
-	rclcpp::Clock::SharedPtr clock_;
+
     
     std::shared_ptr<NeuronGpio> gpio_led_r_, gpio_led_o_, gpio_led_y_, gpio_led_g_;
 	std::shared_ptr<NeuronGpio> gpio_sw_contact_, gpio_sw_onoff_;

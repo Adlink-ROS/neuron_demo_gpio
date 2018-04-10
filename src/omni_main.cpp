@@ -26,9 +26,15 @@
 int main(int argc, char *argv[])
 {
     rclcpp::init(argc, argv);
-	auto node = std::make_shared<NeuronOmniIoNode>()
+	auto node = std::make_shared<NeuronOmniIoNode>();
+    //rclcpp::TimeSource ts(node);
+    //ts.attachClock(node->clock_);
+     
+
     rclcpp::spin(node);
-	node.reset();	// calling destructor through shared_ptr
+    printf("stop");
+    node.reset();	// calling destructor through shared_ptr
     rclcpp::shutdown();
+
     return 0;
 }
