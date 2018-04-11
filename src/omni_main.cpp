@@ -14,7 +14,14 @@
 // limitations under the License.
 
 #include "neuronOmniIoNode.hpp"
+#include<signal.h>
 
+void intHandler(int dummy)
+{
+    //printf("stop");
+    //node.reset();	// calling destructor through shared_ptr
+    rclcpp::shutdown();
+}
 
 /*
  *  In this DEMO, the NeuronOmniIoNode subscribes the TOPIC_CMD topic.
@@ -25,14 +32,13 @@
 */
 int main(int argc, char *argv[])
 {
+    signal(SIGINT, intHandler);
     rclcpp::init(argc, argv);
 	auto node = std::make_shared<NeuronOmniIoNode>();
     //rclcpp::TimeSource ts(node);
     //ts.attachClock(node->clock_);
-     
 
     rclcpp::spin(node);
-    printf("stop");
     node.reset();	// calling destructor through shared_ptr
     rclcpp::shutdown();
 

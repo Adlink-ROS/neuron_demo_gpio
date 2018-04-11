@@ -28,12 +28,12 @@ class NeuronGpio
         static void InitLib();
         static void UnInitLib();
 
-	void SetDir(uint32_t dir);
-	void SetLevel(uint32_t level);
-	void ReadLevel(uint32_t& level);
+        void SetDir(uint32_t dir);
+        void SetLevel(uint32_t level);
+        void ReadLevel(uint32_t& level);
 
         explicit NeuronGpio(uint32_t pin) : pin_(pin) {};
-        virtual ~NeuronGpio() {};
+        virtual ~NeuronGpio() {return;};
 
     private:
         static bool isAvailable_;

@@ -24,6 +24,7 @@ using namespace std::chrono_literals;
 void NeuronOmniIoNode::topic_callback(const std_msgs::msg::String::SharedPtr msg)
 {
     // Print the received message
+    msg_recieved_ = true;
     printf("------------------------------------------------------------------\n");
     printf("=>>> receive from -- Topic <\"%s\">: \"%s\".\n", TOPIC_CMD, msg->data.c_str());
     printf("\n");
@@ -69,6 +70,7 @@ void NeuronOmniIoNode::timer_callback()
 		if( !last_contact_ )		// rising edge
 		{			
 			//RCLCPP_INFO(this->get_logger(), "CONTACT!!! time: %ld", clk2->now());
+            RCLCPP_INFO(this->get_logger(), "CONTACT!!! time: %ld", this->now());
             RCLCPP_INFO(this->get_logger(), "CONTACT!!! time: %ld", std::chrono::system_clock::now());
             // set all LEDs HIGH if contact
             for(int j = 0;j<4;j++)	{	level[j] = EAPI_GPIO_HIGH;	}
@@ -78,7 +80,7 @@ void NeuronOmniIoNode::timer_callback()
 	}else{
         if( last_contact_ )   // falling edge
         {
-            level[rotate_i_] = EAPI_GPIO_HIGH;
+            if (msg_recieved_) level[rotate_i_] = EAPI_GPIO_HIGH;
             set_led(level);
         }
         last_contact_ = false;
@@ -144,6 +146,7 @@ NeuronOmniIoNode::NeuronOmniIoNode() : Node("neuron_gpio")
 	rotate_i_ = 0;
 	switch_on_ = false;
 	last_contact_ = false;
+    msg_recieved_ = false;
 }
 
 //====== Destructor ======//

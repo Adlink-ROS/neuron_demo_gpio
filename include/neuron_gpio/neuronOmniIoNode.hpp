@@ -61,6 +61,7 @@ class NeuronOmniIoNode : public rclcpp::Node
     uint32_t rotate_i_;
 	bool switch_on_;
 	bool last_contact_;
+    bool msg_recieved_;
 };
 
 

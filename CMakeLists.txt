@@ -40,9 +40,19 @@ add_executable(neuron_omni_io src/omni_main.cpp src/neuronOmniIoNode.cpp src/neu
 target_link_libraries(neuron_omni_io semaeapi)
 ament_target_dependencies(neuron_omni_io rclcpp std_msgs)
 
+add_executable(neuron_omni_test src/omni_test.cpp)
+target_link_libraries(neuron_omni_test)
+ament_target_dependencies(neuron_omni_test rclcpp std_msgs)
+
+add_executable(neuron_omni_test2 src/omni_test2.cpp src/neuronOmniIoNodeTest.hpp src/neuronGpio.cpp)
+target_link_libraries(neuron_omni_test2 semaeapi)
+ament_target_dependencies(neuron_omni_test2 rclcpp std_msgs)
+
 install(TARGETS 
 neuron_demo_gpio
 neuron_omni_io
+neuron_omni_test
+neuron_omni_test2
     DESTINATION lib/${PROJECT_NAME}
 )
 
