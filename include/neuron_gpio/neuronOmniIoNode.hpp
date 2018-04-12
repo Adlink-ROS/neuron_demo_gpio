@@ -43,7 +43,6 @@ class NeuronOmniIoNode : public rclcpp::Node
   public:
     explicit NeuronOmniIoNode();
     virtual ~NeuronOmniIoNode();
-    rclcpp::Clock::SharedPtr clock_;
 
   private:
     void topic_callback(const std_msgs::msg::String::SharedPtr msg);

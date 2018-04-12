@@ -33,9 +33,10 @@ class OmniTestNode : public rclcpp::Node
         ts.attachClock(clk2);
         rclcpp::Clock clk3;
         
-        RCLCPP_INFO(this->get_logger(), "clk2 time: %ld", clk2->now());
-        RCLCPP_INFO(this->get_logger(), "clk3 time: %ld", clk3.now());
-        RCLCPP_INFO(this->get_logger(), "this->now time: %ld", this->now());
+        RCLCPP_INFO(this->get_logger(), "clk2 time: %zu", clk2->now().nanoseconds());
+        // this will work!!
+        RCLCPP_INFO(this->get_logger(), "clk3 time: %zu", RCUTILS_NS_TO_MS(clk3.now().nanoseconds()));
+        RCLCPP_INFO(this->get_logger(), "this->now time: %zu", this->now().nanoseconds());
         RCLCPP_INFO(this->get_logger(), "CONTACT!!! time: %ld", std::chrono::system_clock::now());
         
         return;

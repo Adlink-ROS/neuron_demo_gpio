@@ -18,8 +18,7 @@
 
 void intHandler(int dummy)
 {
-    //printf("stop");
-    //node.reset();	// calling destructor through shared_ptr
+    if(dummy){} // surpress compiler warning
     rclcpp::shutdown();
 }
 
@@ -35,8 +34,6 @@ int main(int argc, char *argv[])
     signal(SIGINT, intHandler);
     rclcpp::init(argc, argv);
 	auto node = std::make_shared<NeuronOmniIoNode>();
-    //rclcpp::TimeSource ts(node);
-    //ts.attachClock(node->clock_);
 
     rclcpp::spin(node);
     node.reset();	// calling destructor through shared_ptr

@@ -58,20 +58,14 @@ void NeuronOmniIoNode::timer_callback()
 	uint32_t contact_sw_level, onoff_sw_level;
     gpio_sw_contact_->ReadLevel(contact_sw_level);
 	gpio_sw_onoff_->ReadLevel(onoff_sw_level);
-    
-    /*rclcpp::TimeSource ts(shared_from_this());
-    rclcpp::Clock::SharedPtr clk2 = std::make_shared<rclcpp::Clock>(RCL_ROS_TIME);
-    ts.attachClock(clk2);
-    rclcpp::Clock clk3;*/
-    
+   
 	uint32_t level[4] = {0};
     if( contact_sw_level == EAPI_GPIO_LOW )
 	{
 		if( !last_contact_ )		// rising edge
 		{			
-			//RCLCPP_INFO(this->get_logger(), "CONTACT!!! time: %ld", clk2->now());
-            RCLCPP_INFO(this->get_logger(), "CONTACT!!! time: %ld", this->now());
-            RCLCPP_INFO(this->get_logger(), "CONTACT!!! time: %ld", std::chrono::system_clock::now());
+            RCLCPP_INFO(this->get_logger(), 
+                        "CONTACT!!! time: %zu", RCUTILS_NS_TO_MS(this->now().nanoseconds()));
             // set all LEDs HIGH if contact
             for(int j = 0;j<4;j++)	{	level[j] = EAPI_GPIO_HIGH;	}
             last_contact_ = true;
@@ -118,10 +112,6 @@ NeuronOmniIoNode::NeuronOmniIoNode() : Node("neuron_gpio")
             rmw_qos_profile_sensor_data);
 			
 	timer_ = this->create_wall_timer(10ms, std::bind(&NeuronOmniIoNode::timer_callback, this));
-	clock_ = std::make_shared<rclcpp::Clock>(RCL_ROS_TIME);
-    //ts_ = std::make_shared<rclcpp::TimeSource>(shared_from_this());
-    //ts_ = rclcpp::TimeSource(this);
-   
         
     NeuronGpio::InitLib();
     
@@ -158,6 +148,6 @@ NeuronOmniIoNode::~NeuronOmniIoNode()
 	gpio_led_o_->SetDir(EAPI_GPIO_INPUT);
 	gpio_led_y_->SetDir(EAPI_GPIO_INPUT);
 	gpio_led_g_->SetDir(EAPI_GPIO_INPUT);
-	printf("Node shutting down, reset all GPIOs");
+	printf("Node shutting down, reset all GPIOs\n\n");
     NeuronGpio::UnInitLib();
 }
