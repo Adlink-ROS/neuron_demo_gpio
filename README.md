@@ -1,4 +1,4 @@
-# ROS2 demo node of GPIO with ADLINK-Neuron AmITX-Motherboard 
+# ROS2 demo node of GPIO with ADLINK-ROScube and Starter Kit.
 This package is a demonstration of the integration of ROS2 and onboard GPIO control. It will provide ADLINK omni-NeuronBot peripheral sensor and visual indicators of robot state. The GPIO control is implemented with the ADLINK Smart Embedded Management Agent (SEMA) function, which comes with the Neuron AmITX-Motherboard. The SEMA features various board monitoring, failsafe, as well as GPIO and I2C functionality.
 **[Watch the demo video!](https://youtu.be/gpo7qE80okU)**
 
