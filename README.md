@@ -11,7 +11,7 @@ These instructions will get you a copy of this demo and running on your local ma
 
 ### Prerequisites  
 1. Hardware and library  
-You'll need the ADLINK SEMA library and a compatible motherboard to run this example. You can conatct **SOMEONE** for more information.
+You'll need the ADLINK SEMA library and a compatible motherboard to run this example. You can contact ADLINK for more information.
 2. Download the source of this project to your ROS2 workspace  
     ```
     cd ros2_ws/src/ros2
@@ -32,14 +32,13 @@ Run the following command in the terminal command. If you get something like _`e
         e.g.: cd ros2_ws/src/ros2/neuron_demo_gpio/lib
     ./setlink.sh
     ```  
-      
 
 3. Compile the source code  
-We'll need root access for library linking, that is done by the second step below; ROS2 uses _ament_ as its default build/installation tool.
+We'll need root access for library linking, that is done by the second step below; ROS2 uses `colcon` as its default build/installation tool.
     ```
     cd ros2_ws
     sudo -sE
-    ament build
+    colcon build
     ```  
   
 ## Running the demo
@@ -49,8 +48,8 @@ Each of the code block below is a individual terminal with ROS2 environment veri
 * `root@neuron: ros2 run neuron_demo_gpio neuron_omni_io`  
 
 ### NOTE
-1. terminal can gain root access by first doing `sudo -sE`
-2. alternatively, you can publish the triggering topic manually by `run ros2 topic pub /neuron_hwm_cmd std_msgs/String "data: 0"`
+1. Terminal can gain root access by first doing `sudo -sE`
+2. Alternatively, you can publish the triggering topic manually by `run ros2 topic pub /neuron_hwm_cmd std_msgs/String "data: 0"`
 
 ### Monitoring
 You can checkout the topics by:  
@@ -61,10 +60,10 @@ and
 ### What should happened?
 Besides the information you see on each terminal, proper ROS2 topic is published. 
 * **neuron_demo_gpio** node  
-Subscribes to topic _neuron_gpio_cmd_ from _talker_  
-Publishes topic _neuron_gpio_data_ of type _std_msgs::String_  
+Subscribes to topic `neuron_gpio_cmd` from `talker`  
+Publishes topic `neuron_gpio_data` of type `std_msgs::String`  
 * **neuron_omni_io** node  
-Subscribes to topic _neuron_gpio_cmd_ from _talker_  
+Subscribes to topic `neuron_gpio_cmd` from `talker`  
 Controls the LEDs and read from switches  
 **INSERT NODE GRAPH HERE**
 
