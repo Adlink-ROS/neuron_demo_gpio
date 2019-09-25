@@ -1,5 +1,9 @@
 # ROS2 demo node of GPIO with ADLINK-ROScube and Starter Kit.
-This package is a demonstration of the integration of ROS2 and onboard GPIO control. It will provide ADLINK omni-NeuronBot peripheral sensor and visual indicators of robot state. The GPIO control is implemented with the ADLINK Smart Embedded Management Agent (SEMA) function, which comes with the Neuron AmITX-Motherboard. The SEMA features various board monitoring, failsafe, as well as GPIO and I2C functionality.
+This package is a demonstration of the integration of ROS2 and onboard GPIO control.
+It will provide ADLINK omni-NeuronBot peripheral sensor and visual indicators of robot state.
+The GPIO control is implemented with the ADLINK Smart Embedded Management Agent (SEMA) function, which comes with the Neuron AmITX-Motherboard.
+The SEMA features various board monitoring, failsafe, as well as GPIO and I2C functionality.
+
 **[Watch the demo video!](https://youtu.be/gpo7qE80okU)**
 
 ## Getting Started
@@ -11,7 +15,7 @@ You'll need the ADLINK SEMA library and a compatible motherboard to run this exa
 2. Download the source of this project to your ROS2 workspace  
     ```
     cd ros2_ws/src/ros2
-    git clone https://github.com/EwingKang/neuron_demo_gpio.git
+    git clone https://github.com/Adlink-ROS/neuron_demo_gpio.git
     ```  
 3. 4 LEDs, 2 switches(one tactile, one contact)
 4. Your motherboard and GPIO connected  
@@ -44,8 +48,9 @@ Each of the code block below is a individual terminal with ROS2 environment veri
 * `root@neuron: ros2 run neuron_demo_gpio neuron_demo_gpio`
 * `root@neuron: ros2 run neuron_demo_gpio neuron_omni_io`  
 
-_NOTE1: terminal can gain root access by first doing `sudo -sE`_
-_NOTE2: alternatively, you can publish the triggering topic manually by  `run ros2 topic pub /neuron_hwm_cmd std_msgs/String "data: 0"`_
+### NOTE
+1. terminal can gain root access by first doing `sudo -sE`
+2. alternatively, you can publish the triggering topic manually by `run ros2 topic pub /neuron_hwm_cmd std_msgs/String "data: 0"`
 
 ### Monitoring
 You can checkout the topics by:  
